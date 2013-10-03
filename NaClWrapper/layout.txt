@@ -1,0 +1,32 @@
+layout.txt -  this file - 
+
+scribble.txt - random musings
+
+common.h - common includes
+
+nacl.h - header for NaCl cryptographic library
+
+keygen.c -  
+    key/identity generation code
+
+keyimport.c - 
+    code for importing keys from people.
+        - 
+        - lazy trust
+        - trusted
+keystore.c
+    code for interfacing with the OS for secure
+    storage of keys
+
+encrypt.c
+    code for encrypting messages
+    
+decrypt.c
+    code for decrypting messages
+    
+memory.c
+    abstractions for dealing with memory in a secure manner
+    
+
+========================================
+========================================

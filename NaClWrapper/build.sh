@@ -1,0 +1,1 @@
+cc -I libs/nacl/include/amd64/ libs/nacl/lib/amd64/libnacl.a libs/nacl/lib/amd64/randombytes.o -Wall memory.c keyimport.c -DTSTIMPORT

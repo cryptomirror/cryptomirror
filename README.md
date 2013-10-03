@@ -1,6 +1,6 @@
 #CryptoMirror
 
-The CryptoMirror project explores ways to make crypto user-friendly in non-crypto friendly environments  
+The CryptoMirror project explores ways to make crypto user-friendly in non crypto-friendly environments  
 
 ----
 ## Here are a few of the ideas floating around:
@@ -9,7 +9,6 @@ The CryptoMirror project explores ways to make crypto user-friendly in non-crypt
 * Fonts as secret keys which can render ciphertext into plaintext
 * Screen-shot parsing for stegonagraphic image messages
 * Curses interface for encrypted terminal sessions
-* 
 
 ----
 ## Usability tactics:
