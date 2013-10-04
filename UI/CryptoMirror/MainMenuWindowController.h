@@ -69,6 +69,7 @@ struct crypto_self_identity {
 @interface MainMenuWindowController : NSWindowController {
 
     IBOutlet NSTextField *descriptionField;
+    IBOutlet NSTextField *messageField;
     IBOutlet NSWindow *myWindow;
 
     IBOutlet NSButton *generateIdentityButton;

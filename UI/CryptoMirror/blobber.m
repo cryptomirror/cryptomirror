@@ -100,7 +100,7 @@ extract_blobs (NSString *str)
 
     result = NULL;
     
-    cstr = [str cStringUsingEncoding:NSUTF8StringEncoding];
+    cstr = [str cStringUsingEncoding:NSMacOSRomanStringEncoding];
     if (cstr == NULL)
     {
         goto End;

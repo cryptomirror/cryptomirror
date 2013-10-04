@@ -407,8 +407,11 @@ End:
     // Create the encrypted message blob for the target
     //
 
+    NSString *myString = [messageField stringValue];
+    char *cstr = [myString cStringUsingEncoding:NSMacOSRomanStringEncoding];
+    
     rawblob = create_encrypted_message(_nick, _pk, _sk, dst_pk,
-                             "Hey there crypto pal!", strlen("Hey there crypto pal!"));
+                            cstr, strlen(cstr));
     if (rawblob == NULL)
     {
         //
