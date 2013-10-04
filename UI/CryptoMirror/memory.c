@@ -26,7 +26,7 @@ allocate_mem(unsigned long size, unsigned long flag)
     //
     // XXX make this an mmap of non pageable memory instead.
     //
-    x = calloc(1, size +  sizeof(*x));
+    x = calloc(2, size +  sizeof(*x));
     if (x == NULL)
     {
         return NULL;
