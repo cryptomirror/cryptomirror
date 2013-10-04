@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#include "blobber.h"
 
 int main(int argc, char *argv[])
 {

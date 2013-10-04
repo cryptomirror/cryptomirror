@@ -49,13 +49,66 @@
 #import <Cocoa/Cocoa.h>
 
 
+/*
+  It's stupid to work with structs,  these need to be switched to interfaces.
+*/
+struct crypto_pal_identity {
+    char *nickname;
+    char *pubkey;
+    unsigned int flags;
+} ;
+
+struct crypto_self_identity {
+    char *nickname;
+    unsigned char *pubkey;
+    unsigned char *seckey;
+    unsigned int flags;
+};
+
+
 @interface MainMenuWindowController : NSWindowController {
 
     IBOutlet NSTextField *descriptionField;
     IBOutlet NSWindow *myWindow;
 
-}
+    IBOutlet NSButton *generateIdentityButton;
+    IBOutlet NSTextField *newIdentityNameField;
+    IBOutlet NSPopUpButton *identityList;
+    IBOutlet NSPopUpButton *cryptoPalsList;
+    IBOutlet NSPopUpButton *cryptoPalsList2;
 
+    char *_nick;
+    unsigned char *_pk, *_sk;
+    NSMutableDictionary *_identities;
+    NSMutableDictionary *_cryptopals;
+}
+//
+// Helpers
+//
+- (NSString*)toHex:(char*)str withLen:(int)len;
+
+
+//
+// Pals view
+//
+- (IBAction)generateIdentityAction:(id)sender;
+- (IBAction)copyPubkeyToClipboard:(id)sender;
+- (IBAction)selectActiveIdentity:(id)sender;
 - (void)updateInfoForUIElement:(AXUIElementRef)uiElement;
+- (void)refreshIdentityList:(NSMutableDictionary*)dict;
+- (void)refreshCryptoPalsList:(NSMutableDictionary*)dict;
+- (void)generateIdentityWithName:(NSString*)name;
+
+
+//
+// Send view
+//
+- (IBAction)copyEncryptedMsgToClipboard:(id)sender;
+
+
+//
+// Read view
+//
+
 
 @end

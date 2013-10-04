@@ -1,8 +1,6 @@
 #include "common.h"
 #include "nacl.h"
 
-//    ret = nacl_decrypt(pk1, sk2, nonce, ciphered, clen, &plain);
-
 int
 nacl_decrypt(unsigned char *sender_pk, unsigned char *receiver_sk,
         unsigned char *nonce, unsigned char *ciphertext, 
@@ -26,6 +24,20 @@ nacl_decrypt(unsigned char *sender_pk, unsigned char *receiver_sk,
     {
         return ENOMEM;
     }
-    
+
+#ifdef DMPDECRYPT
+    printf("DECRYPTED NONCE: ");
+    for (i = 0; i <  crypto_box_NONCEBYTES; i++)
+    {
+        printf("%.2x ", (nonce)[i]&0xff);
+    }
+    printf("\n");
+    printf("DECRYPTED CIPHERTEXT: ");
+    for (i = 0; i <  len; i++)
+    {
+        printf("%.2x ", (ciphertext)[i]&0xff);
+    }
+    printf("\n");
+#endif
     return crypto_box_open(*message, ciphertext, len, nonce, sender_pk, receiver_sk);
 }

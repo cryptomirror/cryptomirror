@@ -64,17 +64,12 @@
 
 @interface AppDelegate : NSObject {
     
-    InspectorWindowController		    *_inspectorWindowController;
     MainMenuWindowController    *_descriptionInspectorWindowController;
-    InteractionWindowController		    *_interactionWindowController;
-    HighlightWindowController		    *_highlightWindowController;
     
     AXUIElementRef			    _systemWideElement;
     NSPoint				    _lastMousePoint;
     
     AXUIElementRef			    _currentUIElement;
-    BOOL				    _currentlyInteracting;
-    BOOL				    _highlightLockedUIElement;
 }
 
 - (void)setCurrentUIElement:(AXUIElementRef)uiElement;
@@ -82,13 +77,6 @@
 
 - (void)performTimerBasedUpdate;
 - (void)updateCurrentUIElement;
-
-- (IBAction)lockCurrentUIElement:(id)sender;
-- (void)unlockCurrentUIElement:(id)sender;
-
-- (IBAction)navigateToUIElement:(id)sender;
 - (IBAction)refreshInteractionUIElement:(id)sender;
-
-- (void)toggleHighlightWindow:(id)sender;
 
 @end

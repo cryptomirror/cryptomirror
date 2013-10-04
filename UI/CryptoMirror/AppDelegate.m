@@ -58,6 +58,8 @@
 
 #import "MainMenuWindowController.h"
 
+AppDelegate* g_AppDelegate;
+
 @interface AppDelegate (Private)
 - (BOOL)isInteractionWindowVisible;
 @end
@@ -65,6 +67,7 @@
 #pragma mark Hot Key Registration And Handler
 
 EventHotKeyRef	gMyHotKeyRef;
+
 
 // -------------------------------------------------------------------------------
 //	LockUIElementHotKeyHandler:
@@ -74,11 +77,6 @@ EventHotKeyRef	gMyHotKeyRef;
 // -------------------------------------------------------------------------------
 OSStatus LockUIElementHotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent, void *userData)
 {
-    AppDelegate *appController = (AppDelegate *)userData;
-    if ([appController isInteractionWindowVisible])
-		[NSTimer scheduledTimerWithTimeInterval:0.1 target:appController selector:@selector(unlockCurrentUIElement:) userInfo:nil repeats:NO];
-    else
-		[NSTimer scheduledTimerWithTimeInterval:0.1 target:appController selector:@selector(lockCurrentUIElement:) userInfo:nil repeats:NO];
     return noErr;
 }
 
@@ -103,24 +101,19 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
 
 @implementation AppDelegate
 
+- (id)init {
+    if (self = [super init]) {
+        g_AppDelegate = self;
+    }
+    return self;
+}
+
 - (void)dealloc {
-//    [_inspectorWindowController release];
-//    [_interactionWindowController release];
     [_descriptionInspectorWindowController release];
-//    [_highlightWindowController release];
     if (_systemWideElement) CFRelease(_systemWideElement);
     if (_currentUIElement) CFRelease(_currentUIElement);
     [super dealloc];
 }
-
-/*
- - (HighlightWindowController *)highlightWindowController {
-    if (!_highlightWindowController) {
-        _highlightWindowController = [[HighlightWindowController alloc] initHighlightWindowController];
-    }
-    return _highlightWindowController;
-}
- */
 
 - (void)applicationDidFinishLaunching:(NSNotification *)note {
     
@@ -169,9 +162,7 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
     [_descriptionInspectorWindowController setWindowFrameAutosaveName:@"MainMenu"];
     [_descriptionInspectorWindowController showWindow:nil];
     
-    
-//    _interactionWindowController = [[InteractionWindowController alloc] initWithWindowNibName:@"InteractionWindow"];
-//    [_interactionWindowController setWindowFrameAutosaveName:@"InteractionWindow"];
+
     [self performTimerBasedUpdate];
     
 }
@@ -213,10 +204,7 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
 
 - (void)updateUIElementInfoWithAnimation:(BOOL)flag {
     AXUIElementRef element = [self currentUIElement];
-//    if (_currentlyInteracting) [_interactionWindowController interactWithUIElement:element];
-//    [_inspectorWindowController updateInfoForUIElement:element];
     [_descriptionInspectorWindowController updateInfoForUIElement:element];
-//    [[self highlightWindowController] setHighlightFrame:[UIElementUtilities frameOfUIElement:element] animate:flag];
 }
 
 
@@ -226,7 +214,7 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
 // -------------------------------------------------------------------------------
 - (void)updateCurrentUIElement
 {
-    if (![self isInteractionWindowVisible]) {
+    if (1 /* should update */) {
         // The current mouse position with origin at top right.
         NSPoint cocoaPoint = [NSEvent mouseLocation];
         
@@ -255,12 +243,6 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
             
             AXUIElementRef newElement = NULL;
             
-            /* If the interaction window is not visible, but we still think we are interacting, change that */
-            if (_currentlyInteracting) {
-                _currentlyInteracting = ! _currentlyInteracting;
-//                [_inspectorWindowController indicateUIElementIsLocked:_currentlyInteracting];
-            }
-            
             // Ask Accessibility API for UI Element under the mouse
             // And update the display if a different UIElement
             if (AXUIElementCopyElementAtPosition( _systemWideElement, pointAsCGPoint.x, pointAsCGPoint.y, &newElement ) == kAXErrorSuccess
@@ -268,8 +250,7 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
                 && ([self currentUIElement] == NULL || ! CFEqual( [self currentUIElement], newElement ))) {
                 
                 [self setCurrentUIElement:newElement];
-                [self updateUIElementInfoWithAnimation:NO];
-                
+                [self updateUIElementInfoWithAnimation:NO];                
             }
             
             _lastMousePoint = cocoaPoint;
@@ -286,86 +267,15 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
 {
     return false; //[[_interactionWindowController window] isVisible];
 }
-
-// -------------------------------------------------------------------------------
-//	lockCurrentUIElement:sender
-//
-//	This gets called when our hot key is pressed which means the user wants to lock
-//	onto a particular uiElement.  This also means open the interaction window
-//	titled "Lock on <???>".
-// -------------------------------------------------------------------------------
-- (IBAction)lockCurrentUIElement:(id)sender
-{
-        /*
-    _currentlyInteracting = YES;
-    [_inspectorWindowController indicateUIElementIsLocked:YES];
-    [_interactionWindowController interactWithUIElement:[self currentUIElement]];
-    if (_highlightLockedUIElement) {
-        [[self highlightWindowController] setHighlightFrame:[UIElementUtilities frameOfUIElement:[self currentUIElement]] animate:NO];
-        [[self highlightWindowController] showWindow:nil];
-    }
-            */
-}
-
-// -------------------------------------------------------------------------------
-//	unlockCurrentUIElement:sender
-// -------------------------------------------------------------------------------
-- (void)unlockCurrentUIElement:(id)sender
-{
-    _currentlyInteracting = NO;
-//    [_inspectorWindowController indicateUIElementIsLocked:NO];
-//    [_interactionWindowController close];
-//    [[self highlightWindowController] close];
-//    [_highlightWindowController release];
-//    _highlightWindowController = nil;
-}
-
 #pragma mark -
 
-// -------------------------------------------------------------------------------
-//	interactWithUIElement:sender
-// -------------------------------------------------------------------------------
-- (void)navigateToUIElement:(id)sender
-{
-    if (_currentlyInteracting) {
-        AXUIElementRef element = (AXUIElementRef)[sender representedObject];
-        BOOL flag = true; //[UIElementUtilities isApplicationUIElement:element];
-//        flag = flag && ![UIElementUtilities isApplicationUIElement:[self currentUIElement]];
-        [self setCurrentUIElement:element];
-        [self updateUIElementInfoWithAnimation:flag];
-    }
-}
 
 // -------------------------------------------------------------------------------
 //	refreshInteractionUIElement:sender
 // -------------------------------------------------------------------------------
 - (void)refreshInteractionUIElement:(id)sender
 {
-    if (_currentlyInteracting) {
-        [self updateUIElementInfoWithAnimation:YES];
-    }
+    [self updateUIElementInfoWithAnimation:YES];
 }
-
-
-#pragma mark -
-
-// -------------------------------------------------------------------------------
-//	toggleHighlightWindow:(id)sender
-// -------------------------------------------------------------------------------
-- (void)toggleHighlightWindow:(id)sender
-{
-        /*
-    _highlightLockedUIElement = !_highlightLockedUIElement;
-    if (_currentlyInteracting) {
-        if (_highlightLockedUIElement) {
-            [[self highlightWindowController] setHighlightFrame:[UIElementUtilities frameOfUIElement:[self currentUIElement]] animate:NO];
-            [[self highlightWindowController] showWindow:nil];
-        } else {
-            [[[self highlightWindowController] window] orderOut:nil];
-        }
-    }
-            */
-}
-
 @end
 

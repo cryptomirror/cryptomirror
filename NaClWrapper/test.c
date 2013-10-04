@@ -64,14 +64,14 @@ int main()
     unsigned long clen;
 
     clen = strlen((char *)msg);
-    ret = encrypt(sk1, pk2, msg, &clen, &nonce, &ciphered);
+    ret = nacl_encrypt(sk1, pk2, msg, &clen, &nonce, &ciphered);
     assert(ret == 0);
 
     //
     // Decrypt the message 
     //
     unsigned char *plain;
-    ret = decrypt(pk1, sk2, nonce, ciphered, clen, &plain);
+    ret = nacl_decrypt(pk1, sk2, nonce, ciphered, clen, &plain);
     assert(ret == 0);
 
     //

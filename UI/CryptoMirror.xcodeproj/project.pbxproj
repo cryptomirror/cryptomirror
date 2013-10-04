@@ -10,6 +10,15 @@
 		E45F342017FD44700064CCAD /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45F341F17FD44700064CCAD /* Carbon.framework */; };
 		E45F342217FD44FD0064CCAD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E45F342117FD44FD0064CCAD /* MainMenu.xib */; };
 		E45F342917FD46B40064CCAD /* MainMenuWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E45F342817FD46B40064CCAD /* MainMenuWindowController.m */; };
+		E46C4CF117FE4EBA003DA75B /* b64.m in Sources */ = {isa = PBXBuildFile; fileRef = E46C4CF017FE4EBA003DA75B /* b64.m */; };
+		E46C4CF417FE4F50003DA75B /* blobber.m in Sources */ = {isa = PBXBuildFile; fileRef = E46C4CF317FE4F50003DA75B /* blobber.m */; };
+		E473C96617FE6F7C00B2F395 /* decrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = E473C96117FE6F7C00B2F395 /* decrypt.c */; };
+		E473C96717FE6F7C00B2F395 /* encrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = E473C96217FE6F7C00B2F395 /* encrypt.c */; };
+		E473C96817FE6F7C00B2F395 /* keygen.c in Sources */ = {isa = PBXBuildFile; fileRef = E473C96317FE6F7C00B2F395 /* keygen.c */; };
+		E473C96917FE6F7C00B2F395 /* memory.c in Sources */ = {isa = PBXBuildFile; fileRef = E473C96417FE6F7C00B2F395 /* memory.c */; };
+		E473C96E17FE709500B2F395 /* libnacl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E473C96C17FE709500B2F395 /* libnacl.a */; };
+		E473C96F17FE709500B2F395 /* randombytes.o in Frameworks */ = {isa = PBXBuildFile; fileRef = E473C96D17FE709500B2F395 /* randombytes.o */; };
+		E474414C17FE94380055224D /* messages.m in Sources */ = {isa = PBXBuildFile; fileRef = E474414B17FE94380055224D /* messages.m */; };
 		E4DAF5D717FD443F00EADEE8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4DAF5D617FD443F00EADEE8 /* Cocoa.framework */; };
 		E4DAF5E117FD443F00EADEE8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4DAF5DF17FD443F00EADEE8 /* InfoPlist.strings */; };
 		E4DAF5E317FD443F00EADEE8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E4DAF5E217FD443F00EADEE8 /* main.m */; };
@@ -23,6 +32,19 @@
 		E45F342117FD44FD0064CCAD /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		E45F342717FD46B40064CCAD /* MainMenuWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuWindowController.h; sourceTree = "<group>"; };
 		E45F342817FD46B40064CCAD /* MainMenuWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuWindowController.m; sourceTree = "<group>"; };
+		E46C4CF017FE4EBA003DA75B /* b64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = b64.m; sourceTree = "<group>"; };
+		E46C4CF217FE4F50003DA75B /* blobber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blobber.h; sourceTree = "<group>"; };
+		E46C4CF317FE4F50003DA75B /* blobber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = blobber.m; sourceTree = "<group>"; };
+		E473C96117FE6F7C00B2F395 /* decrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = decrypt.c; sourceTree = "<group>"; };
+		E473C96217FE6F7C00B2F395 /* encrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = encrypt.c; sourceTree = "<group>"; };
+		E473C96317FE6F7C00B2F395 /* keygen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = keygen.c; sourceTree = "<group>"; };
+		E473C96417FE6F7C00B2F395 /* memory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = memory.c; sourceTree = "<group>"; };
+		E473C96517FE6F7C00B2F395 /* nacl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nacl.h; sourceTree = "<group>"; };
+		E473C96A17FE6F8E00B2F395 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		E473C96C17FE709500B2F395 /* libnacl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libnacl.a; sourceTree = "<group>"; };
+		E473C96D17FE709500B2F395 /* randombytes.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = randombytes.o; sourceTree = "<group>"; };
+		E474414A17FE94380055224D /* messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messages.h; sourceTree = "<group>"; };
+		E474414B17FE94380055224D /* messages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = messages.m; sourceTree = "<group>"; };
 		E4DAF5D317FD443F00EADEE8 /* CryptoMirror.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoMirror.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4DAF5D617FD443F00EADEE8 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E4DAF5D917FD443F00EADEE8 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -46,6 +68,8 @@
 			files = (
 				E4DAF5D717FD443F00EADEE8 /* Cocoa.framework in Frameworks */,
 				E45F342017FD44700064CCAD /* Carbon.framework in Frameworks */,
+				E473C96E17FE709500B2F395 /* libnacl.a in Frameworks */,
+				E473C96F17FE709500B2F395 /* randombytes.o in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -58,6 +82,45 @@
 				E45F342117FD44FD0064CCAD /* MainMenu.xib */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		E46C4CEE17FE4E39003DA75B /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				E45F342417FD45140064CCAD /* Resources */,
+				E45F342717FD46B40064CCAD /* MainMenuWindowController.h */,
+				E45F342817FD46B40064CCAD /* MainMenuWindowController.m */,
+				E4DAF5E817FD443F00EADEE8 /* AppDelegate.h */,
+				E4DAF5E917FD443F00EADEE8 /* AppDelegate.m */,
+				E4EB1B3917FD585A00FBCA51 /* UIElementUtilities.h */,
+				E4EB1B3A17FD585A00FBCA51 /* UIElementUtilities.m */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
+		E46C4CEF17FE4E8D003DA75B /* parsing */ = {
+			isa = PBXGroup;
+			children = (
+				E474414A17FE94380055224D /* messages.h */,
+				E474414B17FE94380055224D /* messages.m */,
+				E46C4CF217FE4F50003DA75B /* blobber.h */,
+				E46C4CF317FE4F50003DA75B /* blobber.m */,
+				E46C4CF017FE4EBA003DA75B /* b64.m */,
+			);
+			name = parsing;
+			sourceTree = "<group>";
+		};
+		E473C96017FE6F5800B2F395 /* NaclWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				E473C96A17FE6F8E00B2F395 /* common.h */,
+				E473C96117FE6F7C00B2F395 /* decrypt.c */,
+				E473C96217FE6F7C00B2F395 /* encrypt.c */,
+				E473C96317FE6F7C00B2F395 /* keygen.c */,
+				E473C96417FE6F7C00B2F395 /* memory.c */,
+				E473C96517FE6F7C00B2F395 /* nacl.h */,
+			);
+			name = NaclWrapper;
 			sourceTree = "<group>";
 		};
 		E4DAF5CA17FD443F00EADEE8 = {
@@ -80,6 +143,8 @@
 		E4DAF5D517FD443F00EADEE8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E473C96C17FE709500B2F395 /* libnacl.a */,
+				E473C96D17FE709500B2F395 /* randombytes.o */,
 				E45F341F17FD44700064CCAD /* Carbon.framework */,
 				E4DAF5D617FD443F00EADEE8 /* Cocoa.framework */,
 				E4DAF5D817FD443F00EADEE8 /* Other Frameworks */,
@@ -100,13 +165,10 @@
 		E4DAF5DC17FD443F00EADEE8 /* CryptoMirror */ = {
 			isa = PBXGroup;
 			children = (
-				E45F342717FD46B40064CCAD /* MainMenuWindowController.h */,
-				E45F342817FD46B40064CCAD /* MainMenuWindowController.m */,
-				E4DAF5E817FD443F00EADEE8 /* AppDelegate.h */,
-				E4DAF5E917FD443F00EADEE8 /* AppDelegate.m */,
-				E4EB1B3917FD585A00FBCA51 /* UIElementUtilities.h */,
-				E4EB1B3A17FD585A00FBCA51 /* UIElementUtilities.m */,
-				E45F342417FD45140064CCAD /* Resources */,
+				E473C96017FE6F5800B2F395 /* NaclWrapper */,
+				E46C4CEF17FE4E8D003DA75B /* parsing */,
+				E4DAF5E217FD443F00EADEE8 /* main.m */,
+				E46C4CEE17FE4E39003DA75B /* UI */,
 				E4DAF5DD17FD443F00EADEE8 /* Supporting Files */,
 			);
 			path = CryptoMirror;
@@ -117,7 +179,6 @@
 			children = (
 				E4DAF5DE17FD443F00EADEE8 /* CryptoMirror-Info.plist */,
 				E4DAF5DF17FD443F00EADEE8 /* InfoPlist.strings */,
-				E4DAF5E217FD443F00EADEE8 /* main.m */,
 				E4DAF5E417FD443F00EADEE8 /* CryptoMirror-Prefix.pch */,
 				E4DAF5E517FD443F00EADEE8 /* Credits.rtf */,
 			);
@@ -192,6 +253,13 @@
 				E4DAF5EA17FD443F00EADEE8 /* AppDelegate.m in Sources */,
 				E45F342917FD46B40064CCAD /* MainMenuWindowController.m in Sources */,
 				E4EB1B3B17FD585A00FBCA51 /* UIElementUtilities.m in Sources */,
+				E46C4CF117FE4EBA003DA75B /* b64.m in Sources */,
+				E46C4CF417FE4F50003DA75B /* blobber.m in Sources */,
+				E473C96617FE6F7C00B2F395 /* decrypt.c in Sources */,
+				E473C96717FE6F7C00B2F395 /* encrypt.c in Sources */,
+				E473C96817FE6F7C00B2F395 /* keygen.c in Sources */,
+				E473C96917FE6F7C00B2F395 /* memory.c in Sources */,
+				E474414C17FE94380055224D /* messages.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -285,7 +353,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CryptoMirror/CryptoMirror-Prefix.pch";
 				INFOPLIST_FILE = "CryptoMirror/CryptoMirror-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = ../NaClWrapper/libs/nacl/include/amd64/;
 				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
 			};
@@ -302,7 +375,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CryptoMirror/CryptoMirror-Prefix.pch";
 				INFOPLIST_FILE = "CryptoMirror/CryptoMirror-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = ../NaClWrapper/libs/nacl/include/amd64/;
 				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
 			};

@@ -2,9 +2,6 @@
 #include "common.h"
 #include "nacl.h"
 
-unsigned char pk[crypto_box_PUBLICKEYBYTES];
-unsigned char sk[crypto_box_SECRETKEYBYTES];
-
 /*
  Generate a keypair ; return 0 on success.
  
@@ -69,29 +66,30 @@ int main(int argc, char *argv[])
 #endif
 
 #ifdef STANDALONE
+#error 1
 #include <unistd.h>
-#include <fcntl.h>
-
-void usage()
-{
-    printf("./program -p public_key_output_path -s secret_key_output_path\n");
-    exit(0);
-}
 int main(int argc, char *argv[])
 {
-    int fd, ch;
+    int fd;
     char *pubkey = "cryptobox.publickey";
     char *seckey = "cryptobox.secretkey";
     unsigned char *pk, *sk;
     genkey(&pk, &sk);
      
+    bflag = 0;
     while ((ch = getopt(argc, argv, "p:s:")) != -1) {
          switch (ch) {
-         case 'p':
+         case 'p:
                  pubkey = optarg;
                  break;
          case 's':
                  seckey = optarg;
+                 open(optarg, O_WRONLY, 0600);                     
+                 if ((fd = open(optarg, O_RDONLY, 0)) < 0) {
+                         (void)fprintf(stderr,
+                             "myname: %s: %s\n", optarg, strerror(errno));
+                         exit(1);
+                 }
                  break;
          case '?':
          default:
@@ -99,22 +97,22 @@ int main(int argc, char *argv[])
          }
     }
     
-    fd = open(pubkey, O_CREAT|O_TRUNC|O_WRONLY, 0644);
+    fd = open(pubkey, O_WRONLY, 0644);
     if (fd == -1)
     {
-        fprintf(stderr, "Could not open pubkey output file: %s\n", pubkey);
+        fprintf(stderr, "Could not open pubkey output file: %s", pubkey);
         return 1;
     }
     write(fd, pk, crypto_box_PUBLICKEYBYTES);    
     close(fd);
 
-    fd = open(seckey, O_CREAT|O_TRUNC|O_WRONLY, 0600);
+    fd = open(seckey, O_WRONLY, 0644);
     if (fd == -1)
     {
-        fprintf(stderr, "Could not open seckey output file: %s\n", seckey);
+        fprintf(stderr, "Could not open seckey output file: %s", seckey);
         return 2;
     }
-    write(fd, sk, crypto_box_SECRETKEYBYTES);    
+    write(fd, pk, crypto_box_PUBLICKEYBYTES);    
     close(fd);
     
     release_mem(pk);

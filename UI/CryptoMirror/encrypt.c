@@ -4,7 +4,7 @@
 /*
 */
 int
-nacl_encrypt(unsigned char *sender_sk, unsigned char *receiver_pk, 
+nacl_encrypt(unsigned char *sender_sk, unsigned char *receiver_pk,
         unsigned char *m, unsigned long *plength, 
         unsigned char **nonce, unsigned char **ciphertext)
 {
@@ -52,6 +52,23 @@ nacl_encrypt(unsigned char *sender_sk, unsigned char *receiver_pk,
     memcpy(message + crypto_box_ZEROBYTES, m, length);
 
     ret = crypto_box(*ciphertext, message, *plength, *nonce, receiver_pk, sender_sk);
+
+#ifdef DMPENCRYPT
+    int i;
+    printf("ENCRYPTED NONCE: ");
+    for (i = 0; i <  crypto_box_NONCEBYTES; i++)
+    {
+        printf("%.2x ", (*nonce)[i]&0xff);
+    }
+    printf("\n");
+    printf("ENCRYPTED CIPHERTEXT: ");
+    for (i = 0; i <  *plength; i++)
+    {
+        printf("%.2x ", (*ciphertext)[i]&0xff);
+    }
+    printf("\n");
+#endif
+    
     
     release_mem(message);
     
