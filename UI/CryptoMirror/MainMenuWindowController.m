@@ -58,7 +58,7 @@
     }
     
     ident = calloc(1, sizeof(*ident));
-    ident->nickname = strdup([name cStringUsingEncoding:NSMacOSRomanStringEncoding]);
+    ident->nickname = strdup([name cStringUsingEncoding:NSUTF8StringEncoding]);
     ident->pubkey = pk;
     ident->seckey = sk;
     ident->flags = 0;
@@ -132,7 +132,7 @@ End:
 
                 if (senderNick)
                 {                    
-                    nickname = [[NSString alloc] initWithCString:senderNick encoding:NSMacOSRomanStringEncoding];
+                    nickname = [[NSString alloc] initWithCString:senderNick encoding:NSUTF8StringEncoding];
                 }
                 
                 switch (msgType)
@@ -255,7 +255,7 @@ End:
                                 int i;
                                 plaintext += crypto_box_PUBLICKEYBYTES;
                                 
-                                NSString *decryptedMessage = [[NSString alloc] initWithCString:plaintext encoding:NSMacOSRomanStringEncoding];
+                                NSString *decryptedMessage = [[NSString alloc] initWithCString:plaintext encoding:NSUTF8StringEncoding];
 
                                 plaintext -= crypto_box_PUBLICKEYBYTES;
 
@@ -264,7 +264,15 @@ End:
                                 // safe memory backings that actually wipe strings from memory.
                                 // UI might be a big PITA for this...
                                 //
-                                decoded_output = [NSMutableString stringWithFormat:@"Received message from %@ :: \"%@\"",nickname, decryptedMessage];
+                                if (decoded_output != nil)
+                                {
+                                    [decoded_output appendFormat:@"Received message from %@ :: \"%@\"\n",nickname, decryptedMessage]                         ;
+                                }
+                                else
+                                {
+                                    decoded_output = [NSMutableString stringWithFormat:@"Received message from %@ :: \"%@\"\n",nickname, decryptedMessage];                                }
+
+                                
                                 
                                 release_mem(plaintext);
                             }
@@ -406,7 +414,7 @@ End:
     //
 
     NSString *myString = [messageField stringValue];
-    char *cstr = [myString cStringUsingEncoding:NSMacOSRomanStringEncoding];
+    char *cstr = [myString cStringUsingEncoding:NSUTF8StringEncoding];
     
     rawblob = create_encrypted_message(_nick, _pk, _sk, dst_pk,
                             cstr, strlen(cstr));
@@ -417,7 +425,7 @@ End:
         //
         return;
     }
-    NSString *cryptoblob = [[NSString alloc] initWithCString:rawblob encoding:NSMacOSRomanStringEncoding];
+    NSString *cryptoblob = [[NSString alloc] initWithCString:rawblob encoding:NSUTF8StringEncoding];
     
     free(rawblob);
     rawblob = NULL;
@@ -449,7 +457,7 @@ End:
         //
         return;
     }
-    NSString *cryptoblob = [[NSString alloc] initWithCString:rawblob encoding:NSMacOSRomanStringEncoding];
+    NSString *cryptoblob = [[NSString alloc] initWithCString:rawblob encoding:NSUTF8StringEncoding];
     
     free(rawblob);
     rawblob = NULL;
