@@ -25,7 +25,6 @@
 }
 
 - (void)refreshIdentityList:(NSMutableDictionary*)dict {
-    NSLog(@"Updating identityxxx");
     [identityList removeAllItems];
     [identityList addItemsWithTitles:[dict allKeys]];
 }
@@ -254,7 +253,6 @@ End:
                             else
                             {
                                 int i;
-                                printf("plaintext:\n");
                                 plaintext += crypto_box_PUBLICKEYBYTES;
                                 
                                 NSString *decryptedMessage = [[NSString alloc] initWithCString:plaintext encoding:NSMacOSRomanStringEncoding];
