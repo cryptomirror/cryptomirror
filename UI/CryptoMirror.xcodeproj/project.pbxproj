@@ -35,12 +35,12 @@
 		E46C4CF017FE4EBA003DA75B /* b64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = b64.m; sourceTree = "<group>"; };
 		E46C4CF217FE4F50003DA75B /* blobber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blobber.h; sourceTree = "<group>"; };
 		E46C4CF317FE4F50003DA75B /* blobber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = blobber.m; sourceTree = "<group>"; };
-		E473C96117FE6F7C00B2F395 /* decrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = decrypt.c; sourceTree = "<group>"; };
-		E473C96217FE6F7C00B2F395 /* encrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = encrypt.c; sourceTree = "<group>"; };
-		E473C96317FE6F7C00B2F395 /* keygen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = keygen.c; sourceTree = "<group>"; };
-		E473C96417FE6F7C00B2F395 /* memory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = memory.c; sourceTree = "<group>"; };
-		E473C96517FE6F7C00B2F395 /* nacl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = nacl.h; sourceTree = "<group>"; };
-		E473C96A17FE6F8E00B2F395 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		E473C96117FE6F7C00B2F395 /* decrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = decrypt.c; path = ../../NaClWrapper/decrypt.c; sourceTree = "<group>"; };
+		E473C96217FE6F7C00B2F395 /* encrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = encrypt.c; path = ../../NaClWrapper/encrypt.c; sourceTree = "<group>"; };
+		E473C96317FE6F7C00B2F395 /* keygen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = keygen.c; path = ../../NaClWrapper/keygen.c; sourceTree = "<group>"; };
+		E473C96417FE6F7C00B2F395 /* memory.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = memory.c; path = ../../NaClWrapper/memory.c; sourceTree = "<group>"; };
+		E473C96517FE6F7C00B2F395 /* nacl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nacl.h; path = ../../NaClWrapper/nacl.h; sourceTree = "<group>"; };
+		E473C96A17FE6F8E00B2F395 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../../NaClWrapper/common.h; sourceTree = "<group>"; };
 		E473C96C17FE709500B2F395 /* libnacl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libnacl.a; sourceTree = "<group>"; };
 		E473C96D17FE709500B2F395 /* randombytes.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = randombytes.o; sourceTree = "<group>"; };
 		E474414A17FE94380055224D /* messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messages.h; sourceTree = "<group>"; };

@@ -1,8 +1,6 @@
 #include "common.h"
 #include "nacl.h"
 
-//    ret = nacl_decrypt(pk1, sk2, nonce, ciphered, clen, &plain);
-
 int
 nacl_decrypt(unsigned char *sender_pk, unsigned char *receiver_sk,
         unsigned char *nonce, unsigned char *ciphertext, 

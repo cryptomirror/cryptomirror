@@ -4,7 +4,7 @@
 /*
 */
 int
-nacl_encrypt(unsigned char *sender_sk, unsigned char *receiver_pk, 
+nacl_encrypt(unsigned char *sender_sk, unsigned char *receiver_pk,
         unsigned char *m, unsigned long *plength, 
         unsigned char **nonce, unsigned char **ciphertext)
 {
@@ -19,8 +19,10 @@ nacl_encrypt(unsigned char *sender_sk, unsigned char *receiver_pk,
         // 
         return -1;
     }
-    
-    *ciphertext = allocate_mem(length + crypto_box_BOXZEROBYTES, 0);
+
+    *plength = length + crypto_box_ZEROBYTES;
+
+    *ciphertext = allocate_mem(*plength, 0);
     if (*ciphertext == NULL)
     {
         return ENOMEM;
@@ -39,7 +41,6 @@ nacl_encrypt(unsigned char *sender_sk, unsigned char *receiver_pk,
     //
     // "the first crypto_box_ZEROBYTES bytes of the message m are all 0"
     //
-    *plength = length + crypto_box_ZEROBYTES;
     message = allocate_mem(*plength, 0);
     if (message == NULL)
     {
@@ -52,7 +53,7 @@ nacl_encrypt(unsigned char *sender_sk, unsigned char *receiver_pk,
     memcpy(message + crypto_box_ZEROBYTES, m, length);
 
     ret = crypto_box(*ciphertext, message, *plength, *nonce, receiver_pk, sender_sk);
-    
+
     release_mem(message);
     
     return ret;
