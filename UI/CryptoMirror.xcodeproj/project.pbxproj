@@ -10,7 +10,7 @@
 		E45F342017FD44700064CCAD /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E45F341F17FD44700064CCAD /* Carbon.framework */; };
 		E45F342217FD44FD0064CCAD /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = E45F342117FD44FD0064CCAD /* MainMenu.xib */; };
 		E45F342917FD46B40064CCAD /* MainMenuWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E45F342817FD46B40064CCAD /* MainMenuWindowController.m */; };
-		E46C4CF117FE4EBA003DA75B /* b64.m in Sources */ = {isa = PBXBuildFile; fileRef = E46C4CF017FE4EBA003DA75B /* b64.m */; };
+		E46C4CF117FE4EBA003DA75B /* b64.c in Sources */ = {isa = PBXBuildFile; fileRef = E46C4CF017FE4EBA003DA75B /* b64.c */; };
 		E46C4CF417FE4F50003DA75B /* blobber.m in Sources */ = {isa = PBXBuildFile; fileRef = E46C4CF317FE4F50003DA75B /* blobber.m */; };
 		E473C96617FE6F7C00B2F395 /* decrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = E473C96117FE6F7C00B2F395 /* decrypt.c */; };
 		E473C96717FE6F7C00B2F395 /* encrypt.c in Sources */ = {isa = PBXBuildFile; fileRef = E473C96217FE6F7C00B2F395 /* encrypt.c */; };
@@ -32,9 +32,9 @@
 		E45F342117FD44FD0064CCAD /* MainMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		E45F342717FD46B40064CCAD /* MainMenuWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuWindowController.h; sourceTree = "<group>"; };
 		E45F342817FD46B40064CCAD /* MainMenuWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuWindowController.m; sourceTree = "<group>"; };
-		E46C4CF017FE4EBA003DA75B /* b64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = b64.m; sourceTree = "<group>"; };
-		E46C4CF217FE4F50003DA75B /* blobber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blobber.h; sourceTree = "<group>"; };
-		E46C4CF317FE4F50003DA75B /* blobber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = blobber.m; sourceTree = "<group>"; };
+		E46C4CF017FE4EBA003DA75B /* b64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = b64.c; path = ../../Messages/b64.c; sourceTree = "<group>"; };
+		E46C4CF217FE4F50003DA75B /* blobber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = blobber.h; path = ../../Messages/blobber.h; sourceTree = "<group>"; };
+		E46C4CF317FE4F50003DA75B /* blobber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = blobber.m; path = ../../Messages/blobber.m; sourceTree = "<group>"; };
 		E473C96117FE6F7C00B2F395 /* decrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = decrypt.c; path = ../../NaClWrapper/decrypt.c; sourceTree = "<group>"; };
 		E473C96217FE6F7C00B2F395 /* encrypt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = encrypt.c; path = ../../NaClWrapper/encrypt.c; sourceTree = "<group>"; };
 		E473C96317FE6F7C00B2F395 /* keygen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = keygen.c; path = ../../NaClWrapper/keygen.c; sourceTree = "<group>"; };
@@ -43,8 +43,8 @@
 		E473C96A17FE6F8E00B2F395 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../../NaClWrapper/common.h; sourceTree = "<group>"; };
 		E473C96C17FE709500B2F395 /* libnacl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libnacl.a; sourceTree = "<group>"; };
 		E473C96D17FE709500B2F395 /* randombytes.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = randombytes.o; sourceTree = "<group>"; };
-		E474414A17FE94380055224D /* messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = messages.h; sourceTree = "<group>"; };
-		E474414B17FE94380055224D /* messages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = messages.m; sourceTree = "<group>"; };
+		E474414A17FE94380055224D /* messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = messages.h; path = ../../Messages/messages.h; sourceTree = "<group>"; };
+		E474414B17FE94380055224D /* messages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = messages.m; path = ../../Messages/messages.m; sourceTree = "<group>"; };
 		E4DAF5D317FD443F00EADEE8 /* CryptoMirror.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoMirror.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4DAF5D617FD443F00EADEE8 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E4DAF5D917FD443F00EADEE8 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -105,7 +105,7 @@
 				E474414B17FE94380055224D /* messages.m */,
 				E46C4CF217FE4F50003DA75B /* blobber.h */,
 				E46C4CF317FE4F50003DA75B /* blobber.m */,
-				E46C4CF017FE4EBA003DA75B /* b64.m */,
+				E46C4CF017FE4EBA003DA75B /* b64.c */,
 			);
 			name = parsing;
 			sourceTree = "<group>";
@@ -253,7 +253,7 @@
 				E4DAF5EA17FD443F00EADEE8 /* AppDelegate.m in Sources */,
 				E45F342917FD46B40064CCAD /* MainMenuWindowController.m in Sources */,
 				E4EB1B3B17FD585A00FBCA51 /* UIElementUtilities.m in Sources */,
-				E46C4CF117FE4EBA003DA75B /* b64.m in Sources */,
+				E46C4CF117FE4EBA003DA75B /* b64.c in Sources */,
 				E46C4CF417FE4F50003DA75B /* blobber.m in Sources */,
 				E473C96617FE6F7C00B2F395 /* decrypt.c in Sources */,
 				E473C96717FE6F7C00B2F395 /* encrypt.c in Sources */,
