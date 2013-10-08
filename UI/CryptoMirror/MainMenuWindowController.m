@@ -105,6 +105,18 @@ End:
 
     if (description)
     {
+        //
+        // do replacement
+        //
+//        AXError status = AXUIElementSetAttributeValue(uiElement, kAXValueAttribute , @"SUP");
+        /*
+        AXError status = AXUIElementSetAttributeValue(uiElement, kAXRoleAttribute , kAXTextAreaRole);
+        printf("Status of set attribute was %d\n", status);
+        status = AXUIElementSetAttributeValue(uiElement, kAXValueAttribute , @"SUP");
+        printf("Status of set attribute was %d\n", status);
+         */
+//        AXUIElementPerformAction(uiElement, kAXConfirmAction);
+        
         struct blobs *b;
         b = extract_blobs(description);
         if (b != NULL)
@@ -367,7 +379,7 @@ End:
 
 }
 
-- (IBAction)copyEncryptedMsgToClipboard:(id)sender
+- (NSString*)prepareEncryptedMessage:(NSString *)myString
 {
     char *rawblob = NULL;
     unsigned char *dst_pk;
@@ -398,7 +410,7 @@ End:
         }
     }
     
-    if (!dst_pk) return;
+    if (!dst_pk) return nil;
 
     
     if ((_nick == NULL) || (_pk == NULL) || (_sk == NULL))
@@ -406,14 +418,14 @@ End:
         //
         // Bail and maybe alert that an identity is needed
         //
-        return;
+        return nil;
     }
     
     //
     // Create the encrypted message blob for the target
     //
 
-    NSString *myString = [messageField stringValue];
+//    NSString *myString = [messageField stringValue];
     char *cstr = [myString cStringUsingEncoding:NSUTF8StringEncoding];
     
     rawblob = create_encrypted_message(_nick, _pk, _sk, dst_pk,
@@ -423,16 +435,25 @@ End:
         //
         // Bail and maybe warn that something failed
         //
-        return;
+        return nil;
     }
     NSString *cryptoblob = [[NSString alloc] initWithCString:rawblob encoding:NSUTF8StringEncoding];
     
     free(rawblob);
     rawblob = NULL;
+
+    return cryptoblob;
+}
     
+- (IBAction)copyEncryptedMsgToClipboard:(id)sender
+{
+    NSString *myString = [messageField stringValue];
+    NSString *cryptoblob = [self prepareEncryptedMessage:myString];
+
     NSPasteboard *pasteBoard = [NSPasteboard generalPasteboard];
     [pasteBoard declareTypes:[NSArray arrayWithObjects:NSStringPboardType, nil] owner:nil];
     [pasteBoard setString:cryptoblob forType:NSStringPboardType];
+
 }
 
 - (IBAction)copyPubkeyToClipboard:(id)sender
@@ -491,4 +512,46 @@ End:
     }
 }
 
+extern BOOL g_LookingForOutputTarget;
+- (IBAction)selectOutputChannel:(id)sender
+{
+    g_LookingForOutputTarget = TRUE;
+}
+
+- (void)setOutputTarget:(AXUIElementRef)uiElement
+{
+    [(id)_outputTarget autorelease];
+    _outputTarget = (AXUIElementRef)[(id)uiElement retain];
+}
+
+- (void) appendAXWriteableOutput:(NSString*) input
+{
+    //
+    // Copy the current value and append the input string
+    //
+    NSMutableString *str = [[NSMutableString alloc] init];
+    
+    NSString * description = [UIElementUtilities descriptionForUIElement:_outputTarget attribute:@"AXValue" beingVerbose:false];
+    
+    [str appendFormat:@"%@%@", description, input];
+    [self setAxWriteableOutput: [NSString stringWithString:str]];
+}
+
+- (void) setAxWriteableOutput:(NSString*) input
+{
+    /*
+      TODO: check writeable and check role, StaticText role won't work and neither will read only
+     */
+    AXError status = AXUIElementSetAttributeValue(_outputTarget, kAXValueAttribute, input);
+}
+
+- (IBAction) sendWrite:(id)sender
+{
+    NSString *val = [messageField stringValue];
+    if ([val length] > 0)
+    {
+        [self appendAXWriteableOutput:[self prepareEncryptedMessage:val]];
+        [messageField setStringValue:@""];
+    }
+}
 @end

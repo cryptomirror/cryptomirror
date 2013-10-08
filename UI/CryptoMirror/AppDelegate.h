@@ -73,6 +73,7 @@
 }
 
 - (void)setCurrentUIElement:(AXUIElementRef)uiElement;
+- (void)setOutputTarget:(AXUIElementRef)uiElement;
 - (AXUIElementRef)currentUIElement;
 
 - (void)performTimerBasedUpdate;

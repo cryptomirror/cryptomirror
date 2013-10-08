@@ -59,6 +59,7 @@
 #import "MainMenuWindowController.h"
 
 AppDelegate* g_AppDelegate;
+BOOL g_LookingForOutputTarget;
 
 @interface AppDelegate (Private)
 - (BOOL)isInteractionWindowVisible;
@@ -217,9 +218,10 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
     if (1 /* should update */) {
         // The current mouse position with origin at top right.
         NSPoint cocoaPoint = [NSEvent mouseLocation];
+        NSUInteger buttonsDown = [NSEvent pressedMouseButtons];
         
         // Only ask for the UIElement under the mouse if has moved since the last check.
-        if (!NSEqualPoints(cocoaPoint, _lastMousePoint)) {
+        if (!NSEqualPoints(cocoaPoint, _lastMousePoint) || (g_LookingForOutputTarget && (buttonsDown & 1))) {
 
             NSScreen *foundScreen = nil;
             CGPoint thePoint;
@@ -246,11 +248,24 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
             // Ask Accessibility API for UI Element under the mouse
             // And update the display if a different UIElement
             if (AXUIElementCopyElementAtPosition( _systemWideElement, pointAsCGPoint.x, pointAsCGPoint.y, &newElement ) == kAXErrorSuccess
-                && newElement
-                && ([self currentUIElement] == NULL || ! CFEqual( [self currentUIElement], newElement ))) {
+                && newElement) {
                 
-                [self setCurrentUIElement:newElement];
-                [self updateUIElementInfoWithAnimation:NO];                
+
+
+                if (buttonsDown & 1)
+                {
+                    if (g_LookingForOutputTarget)
+                    {
+                        NSLog(@"Got output target");
+                        [self setOutputTarget:newElement];
+                        g_LookingForOutputTarget = FALSE;
+                    }
+                }
+
+                if([self currentUIElement] == NULL || ! CFEqual( [self currentUIElement], newElement )) {
+                    [self setCurrentUIElement:newElement];
+                    [self updateUIElementInfoWithAnimation:NO];
+                }
             }
             
             _lastMousePoint = cocoaPoint;
@@ -276,6 +291,15 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
 - (void)refreshInteractionUIElement:(id)sender
 {
     [self updateUIElementInfoWithAnimation:YES];
+}
+
+
+// -------------------------------------------------------------------------------
+//	setCurrentUIElement:uiElement
+// -------------------------------------------------------------------------------
+- (void)setOutputTarget:(AXUIElementRef)uiElement
+{
+    [_descriptionInspectorWindowController setOutputTarget:uiElement];
 }
 @end
 

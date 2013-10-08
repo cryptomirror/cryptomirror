@@ -82,6 +82,8 @@ struct crypto_self_identity {
     unsigned char *_pk, *_sk;
     NSMutableDictionary *_identities;
     NSMutableDictionary *_cryptopals;
+    
+    AXUIElementRef _outputTarget;
 }
 //
 // Helpers
@@ -99,12 +101,18 @@ struct crypto_self_identity {
 - (void)refreshIdentityList:(NSMutableDictionary*)dict;
 - (void)refreshCryptoPalsList:(NSMutableDictionary*)dict;
 - (void)generateIdentityWithName:(NSString*)name;
+- (void)setOutputTarget:(AXUIElementRef)uiElement;
 
 
 //
 // Send view
 //
 - (IBAction)copyEncryptedMsgToClipboard:(id)sender;
+- (IBAction)selectOutputChannel:(id)sender;
+- (IBAction) sendWrite:(id)sender;
+- (void) appendAXWriteableOutput:(NSString*) input;
+- (void) setAxWriteableOutput:(NSString*) input;
+- (NSString*) prepareEncryptedMessage:(NSString *)myString;
 
 
 //
