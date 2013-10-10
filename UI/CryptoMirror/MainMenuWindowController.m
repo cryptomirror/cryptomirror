@@ -4,9 +4,16 @@
 #import "common.h"
 #import "blobber.h"
 #import "messages.h"
-#include "nacl.h"
+#import "nacl.h"
+#import "ReadWindowController.h"
+#import <Carbon/Carbon.h>
 
 @implementation MainMenuWindowController
+
+
+- (void)setReadWindow:(ReadWindowController*)rw {
+    _readWindow = rw;
+}
 
 - (void)awakeFromNib {
     
@@ -91,8 +98,6 @@ End:
     {
         [hexStr appendFormat:@"%.2x", (cstr[i]&0xff)];
     }
-    
-//    NSLog(@"GK: %@ ::", hexStr);
     
     return [NSString stringWithString:hexStr];
 }
@@ -321,10 +326,8 @@ End:
 
     if (decoded_output)
     {
-        [descriptionField setTextColor:[NSColor whiteColor]];
-        
-//        NSLog(@"%@", decoded_output);
         [descriptionField setStringValue:decoded_output];
+        [_readWindow UpdateText: decoded_output];
     }
     else
     {
@@ -425,7 +428,7 @@ End:
     // Create the encrypted message blob for the target
     //
 
-//    NSString *myString = [messageField stringValue];
+    //    NSString *myString = [messageField stringValue];
     char *cstr = [myString cStringUsingEncoding:NSUTF8StringEncoding];
     
     rawblob = create_encrypted_message(_nick, _pk, _sk, dst_pk,
@@ -500,7 +503,6 @@ End:
             NSValue *value = [_identities objectForKey:key];
             if (value)
             {
-                //NSLog(@"Value %@", value);
                 struct crypto_self_identity *identity;
                 identity = [value pointerValue];
                 _pk = identity->pubkey;
@@ -520,8 +522,11 @@ extern BOOL g_LookingForOutputTarget;
 
 - (void)setOutputTarget:(AXUIElementRef)uiElement
 {
+    pid_t pid;
+    pid = [UIElementUtilities processIdentifierOfUIElement:_outputTarget];
     [(id)_outputTarget autorelease];
     _outputTarget = (AXUIElementRef)[(id)uiElement retain];
+    _outputApplication = AXUIElementCreateApplication(pid);
 }
 
 - (void) appendAXWriteableOutput:(NSString*) input
@@ -533,7 +538,7 @@ extern BOOL g_LookingForOutputTarget;
     
     NSString * description = [UIElementUtilities descriptionForUIElement:_outputTarget attribute:@"AXValue" beingVerbose:false];
     
-    [str appendFormat:@"%@%@", description, input];
+    [str appendFormat:@"%@%@", input, description];
     [self setAxWriteableOutput: [NSString stringWithString:str]];
 }
 
@@ -542,7 +547,46 @@ extern BOOL g_LookingForOutputTarget;
     /*
       TODO: check writeable and check role, StaticText role won't work and neither will read only
      */
-    AXError status = AXUIElementSetAttributeValue(_outputTarget, kAXValueAttribute, input);
+    AXError status;
+    //
+    // XXX: could replace this with copy to clipboard & paste.... 
+    //
+    status = AXUIElementSetAttributeValue(_outputTarget, kAXValueAttribute, input);
+    
+    /*
+    //
+    //paste
+    //
+    
+     //
+     // Notes.app, etc that do fail also fail this with kAXErrorFailure
+     // May need to switch to CGPostEvent and change focus...
+     //
+     //
+     //
+    status = AXUIElementPostKeyboardEvent(_outputApplication, (CGCharCode)0, kVK_Command, true ); // Command down
+    NSLog(@"Status %d\n", status);
+    usleep(100);
+    status = AXUIElementPostKeyboardEvent(_outputApplication, (CGCharCode)'v', kVK_ANSI_V, true ); // V down
+    usleep(100);
+    NSLog(@"Status %d\n", status);
+    status = AXUIElementPostKeyboardEvent(_outputApplication, (CGCharCode)'v', kVK_ANSI_V, false ); //  V up
+    usleep(100);
+    NSLog(@"Status %d\n", status);
+    status = AXUIElementPostKeyboardEvent(_outputApplication, (CGCharCode)0, kVK_Command, false ); // Command up
+    usleep(100);
+    NSLog(@"Status %d\n", status);
+//     */
+    
+    status = AXUIElementPostKeyboardEvent(_outputApplication,
+                                          0,
+                                          kVK_Return,
+                                          TRUE);
+    usleep(100);
+    status = AXUIElementPostKeyboardEvent(_outputApplication,
+                                          0,
+                                          kVK_Return,
+                                          FALSE);
 }
 
 - (IBAction) sendWrite:(id)sender

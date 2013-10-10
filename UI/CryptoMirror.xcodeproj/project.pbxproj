@@ -19,6 +19,8 @@
 		E473C96E17FE709500B2F395 /* libnacl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E473C96C17FE709500B2F395 /* libnacl.a */; };
 		E473C96F17FE709500B2F395 /* randombytes.o in Frameworks */ = {isa = PBXBuildFile; fileRef = E473C96D17FE709500B2F395 /* randombytes.o */; };
 		E474414C17FE94380055224D /* messages.m in Sources */ = {isa = PBXBuildFile; fileRef = E474414B17FE94380055224D /* messages.m */; };
+		E4BFD205180501BC0030FEC8 /* ReadWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4BFD204180501BC0030FEC8 /* ReadWindow.xib */; };
+		E4BFD209180502E40030FEC8 /* ReadWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BFD208180502E40030FEC8 /* ReadWindowController.m */; };
 		E4DAF5D717FD443F00EADEE8 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4DAF5D617FD443F00EADEE8 /* Cocoa.framework */; };
 		E4DAF5E117FD443F00EADEE8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4DAF5DF17FD443F00EADEE8 /* InfoPlist.strings */; };
 		E4DAF5E317FD443F00EADEE8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E4DAF5E217FD443F00EADEE8 /* main.m */; };
@@ -45,6 +47,9 @@
 		E473C96D17FE709500B2F395 /* randombytes.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = randombytes.o; sourceTree = "<group>"; };
 		E474414A17FE94380055224D /* messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = messages.h; path = ../../Messages/messages.h; sourceTree = "<group>"; };
 		E474414B17FE94380055224D /* messages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = messages.m; path = ../../Messages/messages.m; sourceTree = "<group>"; };
+		E4BFD204180501BC0030FEC8 /* ReadWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReadWindow.xib; sourceTree = "<group>"; };
+		E4BFD207180502E40030FEC8 /* ReadWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReadWindowController.h; sourceTree = "<group>"; };
+		E4BFD208180502E40030FEC8 /* ReadWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReadWindowController.m; sourceTree = "<group>"; };
 		E4DAF5D317FD443F00EADEE8 /* CryptoMirror.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CryptoMirror.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4DAF5D617FD443F00EADEE8 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E4DAF5D917FD443F00EADEE8 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -80,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				E45F342117FD44FD0064CCAD /* MainMenu.xib */,
+				E4BFD204180501BC0030FEC8 /* ReadWindow.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -87,13 +93,14 @@
 		E46C4CEE17FE4E39003DA75B /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				E45F342417FD45140064CCAD /* Resources */,
+				E4BFD206180502D70030FEC8 /* ReadWindow */,
 				E45F342717FD46B40064CCAD /* MainMenuWindowController.h */,
 				E45F342817FD46B40064CCAD /* MainMenuWindowController.m */,
 				E4DAF5E817FD443F00EADEE8 /* AppDelegate.h */,
 				E4DAF5E917FD443F00EADEE8 /* AppDelegate.m */,
 				E4EB1B3917FD585A00FBCA51 /* UIElementUtilities.h */,
 				E4EB1B3A17FD585A00FBCA51 /* UIElementUtilities.m */,
+				E45F342417FD45140064CCAD /* Resources */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -121,6 +128,15 @@
 				E473C96517FE6F7C00B2F395 /* nacl.h */,
 			);
 			name = NaclWrapper;
+			sourceTree = "<group>";
+		};
+		E4BFD206180502D70030FEC8 /* ReadWindow */ = {
+			isa = PBXGroup;
+			children = (
+				E4BFD207180502E40030FEC8 /* ReadWindowController.h */,
+				E4BFD208180502E40030FEC8 /* ReadWindowController.m */,
+			);
+			name = ReadWindow;
 			sourceTree = "<group>";
 		};
 		E4DAF5CA17FD443F00EADEE8 = {
@@ -239,6 +255,7 @@
 				E4DAF5E117FD443F00EADEE8 /* InfoPlist.strings in Resources */,
 				E4DAF5E717FD443F00EADEE8 /* Credits.rtf in Resources */,
 				E45F342217FD44FD0064CCAD /* MainMenu.xib in Resources */,
+				E4BFD205180501BC0030FEC8 /* ReadWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,6 +277,7 @@
 				E473C96817FE6F7C00B2F395 /* keygen.c in Sources */,
 				E473C96917FE6F7C00B2F395 /* memory.c in Sources */,
 				E474414C17FE94380055224D /* messages.m in Sources */,
+				E4BFD209180502E40030FEC8 /* ReadWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

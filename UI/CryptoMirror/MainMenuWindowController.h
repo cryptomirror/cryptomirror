@@ -66,6 +66,8 @@ struct crypto_self_identity {
 };
 
 
+@class ReadWindowController;
+
 @interface MainMenuWindowController : NSWindowController {
 
     IBOutlet NSTextField *descriptionField;
@@ -84,11 +86,14 @@ struct crypto_self_identity {
     NSMutableDictionary *_cryptopals;
     
     AXUIElementRef _outputTarget;
+    AXUIElementRef _outputApplication;
+    ReadWindowController *_readWindow;
 }
 //
 // Helpers
 //
 - (NSString*)toHex:(char*)str withLen:(int)len;
+- (void)setReadWindow:(ReadWindowController*)rw;
 
 
 //

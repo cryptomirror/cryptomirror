@@ -60,16 +60,18 @@
 #import <Cocoa/Cocoa.h>
 #import <HIServices/Accessibility.h>
 
-@class InspectorWindowController, InteractionWindowController, MainMenuWindowController, HighlightWindowController;
+@class ReadWindowController, MainMenuWindowController;
 
 @interface AppDelegate : NSObject {
     
-    MainMenuWindowController    *_descriptionInspectorWindowController;
+    MainMenuWindowController    *_mainMenuWindowController;
+    ReadWindowController        *_readWindowController;
     
     AXUIElementRef			    _systemWideElement;
     NSPoint				    _lastMousePoint;
     
     AXUIElementRef			    _currentUIElement;
+    AXUIElementRef			    _outputTarget;
 }
 
 - (void)setCurrentUIElement:(AXUIElementRef)uiElement;

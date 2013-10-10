@@ -54,9 +54,8 @@
 #import <AppKit/NSAccessibility.h>
 #import <Carbon/Carbon.h>
 #import "AppDelegate.h"
-//#import "UIElementUtilities.h"
-
 #import "MainMenuWindowController.h"
+#import "ReadWindowController.h"
 
 AppDelegate* g_AppDelegate;
 BOOL g_LookingForOutputTarget;
@@ -68,7 +67,6 @@ BOOL g_LookingForOutputTarget;
 #pragma mark Hot Key Registration And Handler
 
 EventHotKeyRef	gMyHotKeyRef;
-
 
 // -------------------------------------------------------------------------------
 //	LockUIElementHotKeyHandler:
@@ -110,7 +108,7 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
 }
 
 - (void)dealloc {
-    [_descriptionInspectorWindowController release];
+    [_mainMenuWindowController release];
     if (_systemWideElement) CFRelease(_systemWideElement);
     if (_currentUIElement) CFRelease(_currentUIElement);
     [super dealloc];
@@ -158,14 +156,17 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
     
     // Pass self in for userInfo, gives us a pointer to ourselves in handler function
     RegisterLockUIElementHotKey((void *)self);
-    
-    _descriptionInspectorWindowController = [[MainMenuWindowController alloc] initWithWindowNibName:@"MainMenu"];
-    [_descriptionInspectorWindowController setWindowFrameAutosaveName:@"MainMenu"];
-    [_descriptionInspectorWindowController showWindow:nil];
-    
+
+    _readWindowController = [[ReadWindowController alloc] initWithWindowNibName:@"ReadWindow"];
+    [_readWindowController setWindowFrameAutosaveName:@"ReadWindow"];
+    [_readWindowController showWindow:nil];
+
+    _mainMenuWindowController = [[MainMenuWindowController alloc] initWithWindowNibName:@"MainMenu"];
+    [_mainMenuWindowController setReadWindow:_readWindowController];
+    [_mainMenuWindowController setWindowFrameAutosaveName:@"MainMenu"];
+    [_mainMenuWindowController showWindow:nil];
 
     [self performTimerBasedUpdate];
-    
 }
 
 #pragma mark -
@@ -205,7 +206,7 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
 
 - (void)updateUIElementInfoWithAnimation:(BOOL)flag {
     AXUIElementRef element = [self currentUIElement];
-    [_descriptionInspectorWindowController updateInfoForUIElement:element];
+    [_mainMenuWindowController updateInfoForUIElement:element];
 }
 
 
@@ -221,7 +222,8 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
         NSUInteger buttonsDown = [NSEvent pressedMouseButtons];
         
         // Only ask for the UIElement under the mouse if has moved since the last check.
-        if (!NSEqualPoints(cocoaPoint, _lastMousePoint) || (g_LookingForOutputTarget && (buttonsDown & 1))) {
+        //if (!NSEqualPoints(cocoaPoint, _lastMousePoint) || (g_LookingForOutputTarget && (buttonsDown & 1)))
+        {
 
             NSScreen *foundScreen = nil;
             CGPoint thePoint;
@@ -249,20 +251,18 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
             // And update the display if a different UIElement
             if (AXUIElementCopyElementAtPosition( _systemWideElement, pointAsCGPoint.x, pointAsCGPoint.y, &newElement ) == kAXErrorSuccess
                 && newElement) {
-                
-
 
                 if (buttonsDown & 1)
                 {
                     if (g_LookingForOutputTarget)
                     {
-                        NSLog(@"Got output target");
                         [self setOutputTarget:newElement];
                         g_LookingForOutputTarget = FALSE;
                     }
                 }
 
-                if([self currentUIElement] == NULL || ! CFEqual( [self currentUIElement], newElement )) {
+                //if([self currentUIElement] == NULL || ! CFEqual( [self currentUIElement], newElement ))
+                {
                     [self setCurrentUIElement:newElement];
                     [self updateUIElementInfoWithAnimation:NO];
                 }
@@ -299,7 +299,7 @@ static OSStatus RegisterLockUIElementHotKey(void *userInfo) {
 // -------------------------------------------------------------------------------
 - (void)setOutputTarget:(AXUIElementRef)uiElement
 {
-    [_descriptionInspectorWindowController setOutputTarget:uiElement];
+    [_mainMenuWindowController setOutputTarget:uiElement];
 }
 @end
 
