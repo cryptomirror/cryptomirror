@@ -74,7 +74,7 @@ create_encrypted_message(char *sender_nickname, unsigned char *sender_pubkey,
     
     blob = NULL;
     raw = NULL;
-    
+    ciphertext = NULL;
     //
     // Prepare the encrypted message for starters
     //
@@ -91,7 +91,7 @@ create_encrypted_message(char *sender_nickname, unsigned char *sender_pubkey,
     // [V|T][Nick Len][Nickname\0][SndrPubLen][SndrPubKey][RcvrPubLen][RcvrPubKey][NonceLen][Nonce][CipherLen][Cipher]
     //
     alloc_size = sizeof(unsigned int)*2 + strlen(sender_nickname) + 1 + 1*2 + crypto_box_PUBLICKEYBYTES*2;
-    alloc_size += 1 + crypto_box_NONCEBYTES + sizeof(unsigned int) + cipherTextSize;
+    alloc_size += 1 + crypto_box_NONCEBYTES + sizeof(unsigned int) + cipherTextSize - crypto_box_BOXZEROBYTES;
     raw = malloc(alloc_size);
     if (raw == NULL)
     {
@@ -143,21 +143,12 @@ create_encrypted_message(char *sender_nickname, unsigned char *sender_pubkey,
     // Copy the ciphertext length and value
     //
     len = (unsigned int *)next;
-    *len = (unsigned int)cipherTextSize;
-    memcpy(next + sizeof(unsigned int), ciphertext, cipherTextSize);
+    *len = (unsigned int)cipherTextSize - crypto_box_BOXZEROBYTES;
+    memcpy(next + sizeof(unsigned int), ciphertext + crypto_box_BOXZEROBYTES, cipherTextSize - crypto_box_BOXZEROBYTES);
 
     //
     // Print out the raw blob from ciphertext on
     //
-    /*
-    printf("nonce + ciphertext sent =\n");
-    int i;
-    for (i = 0; i < cipherTextSize + crypto_box_NONCEBYTES; i++)
-    {
-        printf("%.2x ", next[i - crypto_box_NONCEBYTES]&0xff);
-    }
-    printf("\n");
-     */
 
     next = next + sizeof(unsigned int) + cipherTextSize;
     if (next != (raw + alloc_size))
@@ -168,6 +159,15 @@ create_encrypted_message(char *sender_nickname, unsigned char *sender_pubkey,
     blob = make_blob_string(raw, alloc_size);
     
 End:
+    
+    //
+    // Release the encrypted ciphertext
+    //
+    if (ciphertext != NULL)
+    {
+        release_mem(ciphertext);
+    }
+    
     return blob;
 }
 

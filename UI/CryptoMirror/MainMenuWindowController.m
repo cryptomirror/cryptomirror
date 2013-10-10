@@ -248,21 +248,21 @@ End:
                         if (_pk && (memcmp(_pk, receiverPubkey, crypto_box_PUBLICKEYBYTES) == 0))
                         {
                             int ret;
-                            unsigned char *plaintext;
-/*                            printf("nonce + ciphertext rcvd =\n");
-                            int i;
-                            for (i = 0; i < cipherLen - 4; i++)
-                            {
-                                printf("%.2x ", senderCiphertext[i] & 0xff);
-                            }
-                            printf("\n");
- */
+                            unsigned char *plaintext = NULL;
+                            
+                            unsigned char *ciphered;
+                            ciphered = allocate_mem(cipherLen + crypto_box_NONCEBYTES + crypto_box_BOXZEROBYTES, 0);
+
+                            memcpy(ciphered + crypto_box_NONCEBYTES + crypto_box_BOXZEROBYTES,
+                                   senderCiphertext + crypto_box_NONCEBYTES,
+                                   cipherLen - crypto_box_NONCEBYTES);
 
                             ret = nacl_decrypt(senderPubkey, _sk,
-                                         senderCiphertext,
-                                         senderCiphertext + crypto_box_NONCEBYTES,
-                                         cipherLen - crypto_box_NONCEBYTES,
-                                         &plaintext);
+                                             senderCiphertext,
+                                             ciphered + crypto_box_NONCEBYTES,
+                                             cipherLen - crypto_box_NONCEBYTES + crypto_box_BOXZEROBYTES,
+                                             &plaintext);
+                            release_mem(ciphered);
                             if (ret != 0)
                             {
                                 NSLog(@"Failed to decrypt!!! Ouch");
@@ -289,8 +289,6 @@ End:
                                 {
                                     decoded_output = [NSMutableString stringWithFormat:@"Received message from %@ :: \"%@\"\n",nickname, decryptedMessage];                                }
 
-                                
-                                
                                 release_mem(plaintext);
                             }
                         }
