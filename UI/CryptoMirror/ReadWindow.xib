@@ -57,11 +57,10 @@
 							<string key="NSFrame">{{17, 20}, {682, 244}}</string>
 							<reference key="NSSuperview" ref="875695778"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="1046443513">
 								<int key="NSCellFlags">67108864</int>
-								<int key="NSCellFlags2">205520896</int>
+								<int key="NSCellFlags2">4194304</int>
 								<string key="NSContents">No Description</string>
 								<object class="NSFont" key="NSSupport">
 									<string key="NSName">LucidaGrande</string>
