@@ -7,23 +7,35 @@ nacl_decrypt(unsigned char *sender_pk, unsigned char *receiver_sk,
         unsigned long len,
         unsigned char **message)
 {
-    unsigned int i;
-    //
-    // Verify that the first crypto_box_BOXZEROBYTES of ciphertext are 0
-    //
-    for (i = 0; i < crypto_box_BOXZEROBYTES; i++)
-    {
-        if (ciphertext[i] != 0)
-        {
-            return -1;
-        }
-    }
+    unsigned int ret;
+    unsigned char *ciphered;
+    unsigned long cLen;
     
-    *message = allocate_mem(len, 0);
-    if (*message == NULL)
+    cLen = len + crypto_box_BOXZEROBYTES;
+    
+    ciphered = allocate_mem(cLen, 0);
+    if (ciphered == NULL)
     {
         return ENOMEM;
     }
     
-    return crypto_box_open(*message, ciphertext, len, nonce, sender_pk, receiver_sk);
+    //
+    // Add back in crypto_box_BOXZEROBYTES of NUL
+    // bytes at the start
+    //
+    
+    memcpy(ciphered + crypto_box_BOXZEROBYTES, ciphertext, len);
+    
+    *message = allocate_mem(cLen, 0);
+    if (*message == NULL)
+    {
+        release_mem(ciphered);
+        return ENOMEM;
+    }
+    
+    ret = crypto_box_open(*message, ciphered, cLen, nonce, sender_pk, receiver_sk);
+    
+    release_mem(ciphered);
+    
+    return ret;
 }

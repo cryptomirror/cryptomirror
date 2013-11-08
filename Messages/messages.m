@@ -91,7 +91,7 @@ create_encrypted_message(char *sender_nickname, unsigned char *sender_pubkey,
     // [V|T][Nick Len][Nickname\0][SndrPubLen][SndrPubKey][RcvrPubLen][RcvrPubKey][NonceLen][Nonce][CipherLen][Cipher]
     //
     alloc_size = sizeof(unsigned int)*2 + strlen(sender_nickname) + 1 + 1*2 + crypto_box_PUBLICKEYBYTES*2;
-    alloc_size += 1 + crypto_box_NONCEBYTES + sizeof(unsigned int) + cipherTextSize - crypto_box_BOXZEROBYTES;
+    alloc_size += 1 + crypto_box_NONCEBYTES + sizeof(unsigned int) + cipherTextSize;
     raw = malloc(alloc_size);
     if (raw == NULL)
     {
@@ -143,8 +143,8 @@ create_encrypted_message(char *sender_nickname, unsigned char *sender_pubkey,
     // Copy the ciphertext length and value
     //
     len = (unsigned int *)next;
-    *len = (unsigned int)cipherTextSize - crypto_box_BOXZEROBYTES;
-    memcpy(next + sizeof(unsigned int), ciphertext + crypto_box_BOXZEROBYTES, cipherTextSize - crypto_box_BOXZEROBYTES);
+    *len = (unsigned int)cipherTextSize;
+    memcpy(next + sizeof(unsigned int), ciphertext, cipherTextSize);
 
     //
     // Print out the raw blob from ciphertext on

@@ -10,7 +10,8 @@ nacl_encrypt(unsigned char *sender_sk, unsigned char *receiver_pk,
 {
     unsigned char *message;
     int ret;
-    unsigned long length = *plength;
+    unsigned long cLen, length = *plength;
+    unsigned char *ciphered;
     
     if (length > (1<<30LL))
     {
@@ -20,10 +21,10 @@ nacl_encrypt(unsigned char *sender_sk, unsigned char *receiver_pk,
         return -1;
     }
 
-    *plength = length + crypto_box_ZEROBYTES;
+    cLen = length + crypto_box_ZEROBYTES;
 
-    *ciphertext = allocate_mem(*plength, 0);
-    if (*ciphertext == NULL)
+    ciphered = allocate_mem(cLen, 0);
+    if (ciphered == NULL)
     {
         return ENOMEM;
     }
@@ -31,8 +32,8 @@ nacl_encrypt(unsigned char *sender_sk, unsigned char *receiver_pk,
     *nonce = allocate_mem(crypto_box_NONCEBYTES, 0);
     if (*nonce == NULL)
     {
-        release_mem(*ciphertext);
-        *ciphertext = NULL;
+        release_mem(ciphered);
+        ciphered = NULL;
         return ENOMEM;
     }
 
@@ -41,20 +42,50 @@ nacl_encrypt(unsigned char *sender_sk, unsigned char *receiver_pk,
     //
     // "the first crypto_box_ZEROBYTES bytes of the message m are all 0"
     //
-    message = allocate_mem(*plength, 0);
+    message = allocate_mem(cLen, 0);
     if (message == NULL)
     {
         release_mem(*nonce);
-        release_mem(*ciphertext);
-        *nonce = *ciphertext = NULL;
+        release_mem(ciphered);
+        *nonce = ciphered = NULL;
         return ENOMEM;        
     }
     
     memcpy(message + crypto_box_ZEROBYTES, m, length);
 
-    ret = crypto_box(*ciphertext, message, *plength, *nonce, receiver_pk, sender_sk);
+    ret = crypto_box(ciphered, message, cLen, *nonce, receiver_pk, sender_sk);
 
     release_mem(message);
+
+    if (ret == 0)
+    {
+        //
+        // Skip the first crypto_box_BOXZEROBYTES.
+        // The wrapper will add them back in.
+        //
+        int i;
+        for (i = 0; i < crypto_box_BOXZEROBYTES; i++)
+        {
+            if (ciphered[i] != 0)
+            {
+                abort();
+            }
+        }
+        *ciphertext = allocate_mem(cLen - crypto_box_BOXZEROBYTES, 0);
+        if (ciphertext == NULL)
+        {
+            ret = ENOMEM;
+        }
+        else
+        {
+            memcpy(*ciphertext,
+                   ciphered + crypto_box_BOXZEROBYTES,
+                   cLen - crypto_box_BOXZEROBYTES);
+            *plength = cLen - crypto_box_BOXZEROBYTES;
+        }
+    }
+    
+    release_mem(ciphered);
     
     return ret;
 }

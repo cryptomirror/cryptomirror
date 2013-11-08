@@ -250,26 +250,17 @@ End:
                             int ret;
                             unsigned char *plaintext = NULL;
                             
-                            unsigned char *ciphered;
-                            ciphered = allocate_mem(cipherLen + crypto_box_NONCEBYTES + crypto_box_BOXZEROBYTES, 0);
-
-                            memcpy(ciphered + crypto_box_NONCEBYTES + crypto_box_BOXZEROBYTES,
-                                   senderCiphertext + crypto_box_NONCEBYTES,
-                                   cipherLen - crypto_box_NONCEBYTES);
-
                             ret = nacl_decrypt(senderPubkey, _sk,
                                              senderCiphertext,
-                                             ciphered + crypto_box_NONCEBYTES,
-                                             cipherLen - crypto_box_NONCEBYTES + crypto_box_BOXZEROBYTES,
+                                             senderCiphertext + crypto_box_NONCEBYTES,
+                                             cipherLen - crypto_box_NONCEBYTES,
                                              &plaintext);
-                            release_mem(ciphered);
                             if (ret != 0)
                             {
                                 NSLog(@"Failed to decrypt!!! Ouch");
                             }
                             else
                             {
-                                int i;
                                 plaintext += crypto_box_PUBLICKEYBYTES;
                                 
                                 NSString *decryptedMessage = [[NSString alloc] initWithCString:plaintext encoding:NSUTF8StringEncoding];
