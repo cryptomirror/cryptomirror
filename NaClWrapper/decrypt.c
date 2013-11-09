@@ -22,8 +22,7 @@ nacl_decrypt(unsigned char *sender_pk, unsigned char *receiver_sk,
     //
     // Add back in crypto_box_BOXZEROBYTES of NUL
     // bytes at the start
-    //
-    
+    //    
     memcpy(ciphered + crypto_box_BOXZEROBYTES, ciphertext, len);
     
     *message = allocate_mem(cLen, 0);
