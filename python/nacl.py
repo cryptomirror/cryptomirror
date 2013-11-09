@@ -37,10 +37,9 @@ def nacl_encrypt(sender_secret,
   #
   _message_padded = "\x00"*ZEROBYTES + message
   cLen = len(_message_padded)
-  _message = BUF(_message_padded)
   _ciphertext = BUF(cLen)
   ret = LIB.crypto_box(_ciphertext, 
-                       _message, 
+                       _message_padded, 
                        cLen, 
                        nonce, 
                        receiver_public, 
