@@ -251,20 +251,26 @@ if __name__ == "__main__":
                                                   "Hello anonymous world")  
   
   identities = {ID_bob_to_alice: alice_pk1}
-  for ident in identities.keys():
-    print ident, k  ey
+
+  #
   # sidenote: @ 1,000,000 users this becomes too slow. 
   # a server would want to partition users by generating
-  # multiple identities to hand, and cross-signing the
-  # identities.
+  # multiple identities to hand out, and cross-signing the
+  # identities with a root identity
+  #
+  for ID_key in identities:
+    pubkey = identities[ID_key] 
+    if verify_sender(nonce, f_nonce, ID_key):
+      break
+    
   #
   # bob verifies f_nonce and decrypts message
-  result = verify_sender(nonce, f_nonce, ID_bob_to_alice)
+  result = verify_sender(nonce, f_nonce, ID_key)
   if result:
     pass
   else:
     raise Exception("Unknown sender")
-  plaintext = get_ghost_message(alice_pk1, bob_sk2, nonce, f_nonce, ciphertext)
+  plaintext = get_ghost_message(pubkey, bob_sk2, nonce, f_nonce, ciphertext)
   print plaintext
   
   
