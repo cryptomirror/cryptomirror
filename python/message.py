@@ -81,12 +81,16 @@ def parse_message(msg):
   
   return sender_nickname, sender_pubkey, dest_pubkey, nonce, cipher
 
+def make_keypair():
+  pub, sec = nacl.gen_keypair()
+  return pub, sec
+
 if __name__ == "__main__":
   #create identity for bob, pk1, pk2
-  bob_pk1, bob_sk1 = nacl.gen_keypair()
+  bob_pk1, bob_sk1 = make_keypair()
 
   #create identity for alice
-  alice_pk2, alice_sk2 = nacl.gen_keypair()
+  alice_pk2, alice_sk2 = make_keypair()
 
   #bob sends alice a message
   msg = create_encrypted_message("bob", bob_pk1, bob_sk1, alice_pk2, "Hello world")
@@ -98,4 +102,3 @@ if __name__ == "__main__":
   #alice then decrypts it using her secret key  
   plaintext = nacl.nacl_decrypt(sender_pubkey, alice_sk2, nonce, cipher)
   print plaintext  
-  

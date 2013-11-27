@@ -17,7 +17,26 @@ NONCEBYTES = crypto_box_curve25519xsalsa20poly1305_ref_NONCEBYTES = 24
 ZEROBYTES = crypto_box_curve25519xsalsa20poly1305_ref_ZEROBYTES = 32
 BOXZEROBYTES = crypto_box_curve25519xsalsa20poly1305_ref_BOXZEROBYTES = 16
 
+LIB.crypto_stream = LIB.crypto_stream_xsalsa20_ref
+STREAM_NONCEBYTES = crypto_stream_xsalsa20_ref_NONCEBYTES = 24
+STREAM_KEYSIZE = crypto_stream_xsalsa20_ref_KEYBYTES = 32
+
 BUF = lambda x : ctypes.create_string_buffer(x)
+
+def nacl_symmetric(stream_len, key, nonce=None):
+  assert(len(key) == STREAM_KEYSIZE)
+
+  if nonce == None:
+    nonce = BUF(STREAM_NONCEBYTES)
+    ret = LIB.randombytes(nonce, STREAM_NONCEBYTES)
+    if ret != STREAM_NONCEBYTES:
+      raise Exception("Expected random bytes: %d"%STREAM_NONCEBYTES)
+      
+  stream = BUF(stream_len)
+  ret = LIB.crypto_stream(stream, stream_len, nonce, key)
+  if ret != 0:
+    raise Exception("Encryption failure")
+  return nonce[:], stream[:]
 
 def nacl_encrypt(sender_secret,
                 receiver_public,
