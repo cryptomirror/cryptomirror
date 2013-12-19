@@ -254,35 +254,37 @@ end:
  */
 static void cmd_ghost(const char *data, void *server, WI_ITEM_REC *item)
 {
-	char *cmd = NULL;
+	char *response = NULL;
 	QUERY_REC *query;
+	int ret;
 	
 	query = QUERY(item);
-
-	/* Check key generation state. */
-//	key_gen_check();
 
 	if (*data == '\0') {
 		IRSSI_INFO(NULL, NULL, "Alive!");
 		goto end;
 	}
-
-	utils_extract_command(data, &cmd);
-	if (!cmd) {
-		/* ENOMEM and cmd is untouched. */
-		goto end;
+	
+	if (query && query->server && query->server->connrec)
+	{
+		ret = PyBridge_ghost_query_command(query->server, data, query->name, &response);
+		if (response)
+		{
+			IRSSI_INFO(NULL, NULL, "GHOST QUERY CMD RESPONSE (%d): %s\n", ret, response);			
+			free(response);
+		}
 	}
-
-	if (query && query->server && query->server->connrec) {
-		cmd_generic(user_state_global, query->server, query->name, cmd, data);
-	} else {
-		cmd_generic(user_state_global, NULL, NULL, cmd, data);
+	else if (server)
+	{
+		ret = PyBridge_ghost_command(server, data, &response);
+		if (response)
+		{
+			IRSSI_INFO(NULL, NULL, "GHOST CMD RESPONSE (%d): %s\n", ret, response);			
+			free(response);
+		}
 	}
 
 	statusbar_items_redraw("ghost");
-
-	free(cmd);
-
 end:
 	return;
 }
@@ -363,7 +365,10 @@ void ghost_init(void)
 	
 	module = "ghost";
 
-	ret = PyBridge_init("/code/cryptomirror/irssi-ghost/src/", module);
+	//
+	// TODO; this needs to come from a configuration
+	//
+	ret = PyBridge_init("/code/cryptomirror/irssi-ghost/src/python/", module);
 	if (ret != 0)
 	{
 		IRSSI_NOTICE(NULL, NULL, "Could not initialize python bridge with module: %s (%d)\n", module, ret);

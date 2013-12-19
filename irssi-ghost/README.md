@@ -1,5 +1,9 @@
-## Hello ##
-This is an empty irssi module example, it was stripped from the libotr irssi plugin.
+## IRSSI-GHOST ##
+
+This is an irssi module which provides python hooks for transforming communications
+in a manner suitable for privacy operations. 
+
+
 
 Requirements
 ---------
@@ -8,6 +12,10 @@ Requirements
 * glib2.0 Development package
 
 * automake, autoconf, libtool
+
+* Python-dev
+
+* NaCl
 
 Installation
 ---------

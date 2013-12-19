@@ -70,10 +70,24 @@ static void _cmd_help(void *ustate, SERVER_REC *irssi,
 	free(cmd_line);
 }
 
+/*
+ * /ghost kex 
+ */
+static void _cmd_key_exchange(void *ustate, SERVER_REC *irssi,
+		const char *target, const void *data)
+{
+	int ret;
+	char *cmd_line;
+
+	//
+
+	free(cmd_line);
+}
 static struct irssi_commands cmds[] = {
 	{ "version", _cmd_version },
 	{ "debug", _cmd_debug },
 	{ "help", _cmd_help },
+	{ "kex", _cmd_key_exchange },
 	{ NULL, NULL },
 	{ NULL, NULL }
 };

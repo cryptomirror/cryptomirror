@@ -2,20 +2,15 @@ import ghostlib
 import blobber
 import sys
 
-global PendingMessages
+global PendingMessages, PendingDebugMessages
 PendingMessages = []
+PendingDebugMessages = []
 
-global debugfile
-debugfile = None
-def debug(msg, nick="none"):
-    pass
-    """
-    global debugfile
-    if not debugfile:
-        debugfile = open("/tmp/debug_%s" % nick, 'w')
-    debugfile.write(msg + '\n')
-    debugfile.flush()
-    """
+def debug(msg, nick=None):
+    if nick:
+        PendingDebugMessages.append("%s: %s"%(nick, msg))
+    else:
+        PendingDebugMessages.append(msg)
 
 class CryptoState:
     """
@@ -146,7 +141,7 @@ class CryptoState:
 
     def set_state(self, state):
         self.state = state
-        print '%s went to state %d'%(self.nickname, state)
+        debug('%s went to state %d'%(self.nickname, state))
 
 global users
 users = {}
@@ -171,7 +166,7 @@ def send_private(server, my_nick, target, msg):
     try:
         ret, msg2 = crypto_state.next_out(msg)
     except Exception, e:
-        print '> fail send priv8 with exception <'+e
+        debug('> fail send priv8 with exception <'+e)
         ret = 13
         msg2 = ""
     #print >> sys.stderr, my_nick, "send @", crypto_state.state, msg2, ":( :( :()))"
@@ -197,7 +192,7 @@ def receive_private(server, my_nick, sender, msg):
     try:
         ret, msg2 = crypto_state.next_in(msg)
     except Exception, e:
-        print '> fail rcv priv8 with exception <'+e
+        debug('> fail rcv priv8 with exception <'+e)
         ret = 12
         msg2 = ""
 
@@ -227,8 +222,8 @@ def receive_public(server, my_nick, channel, sender, msg):
     return 0
 
 def close_private(*args):
-    print args
-    print 'close private'
+    debug(str(args))
+    debug('close private')
 
 def pending_messages(*args):
     global PendingMessages
@@ -236,6 +231,19 @@ def pending_messages(*args):
     ret = tuple(PendingMessages)
     PendingMessages = []
     return ret 
+
+def pending_debug_messages(*args):
+    global PendingDebugMessages
+    #print "Sending pending messages", PendingMessages, args
+    ret = tuple(PendingDebugMessages)
+    PendingDebug = []
+    return ret 
+
+def ghost_query_command(server, my_nick, query_target, msg):
+    return 0, "Ghost command received: my_nick=%s query_target=%s msg=%s"%(my_nick, query_target, msg)
+
+def ghost_command(server, my_nick, data):
+    return 0, "Ghost command received: my_nick=%s msg=%s"%(my_nick, data)
 
 if __name__ == "__main__":
     a = CryptoState("alice")

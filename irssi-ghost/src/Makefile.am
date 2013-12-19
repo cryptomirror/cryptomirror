@@ -1,6 +1,6 @@
 AM_CFLAGS = $(PACKAGE_FLAGS)
 
-IRSSI_DIST=/usr/include/irssi
+IRSSI_DIST=/code/irssi-0.8.16-rc1/
 
 IRSSI_INCLUDE = -I$(IRSSI_DIST) \
 				-I$(IRSSI_DIST)/src \
