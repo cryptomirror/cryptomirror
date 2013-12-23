@@ -315,37 +315,6 @@ static void ghost_statusbar(struct SBAR_ITEM_REC *item, int get_size_only)
 //			formatnum ? theme_formats[formatnum].def : "", " ", FALSE);
 }
 
-/*
- * Create otr module directory if none exists.
- */
-static int create_module_dir(void)
-{
-	int ret;
-	char *dir_path = strdup("/no/where/whatever");
-
-	/* Create ~/.irssi/otr directory. */
-//	ret = asprintf(&dir_path, "%s%s", get_client_config_dir(), OTR_DIR);
-	ret = -1;
-	if (ret < 0) {
-		IRSSI_MSG("Unable to allocate home dir path.");
-		goto error_alloc;
-	}
-
-	ret = access(dir_path, F_OK);
-	if (ret < 0) {
-		ret = mkdir(dir_path, S_IRWXU);
-		if (ret < 0) {
-			IRSSI_MSG("Unable to create %s directory.", dir_path);
-			goto error;
-		}
-	}
-
-error:
-	free(dir_path);
-error_alloc:
-	return ret;
-}
-
 void irssi_send_message(SERVER_REC *irssi, const char *recipient,
 		const char *msg)
 {
@@ -378,8 +347,6 @@ void ghost_init(void)
 	module_register(MODULE_NAME, "core");
 
 	theme_register(theme_formats);
-
-	ret = create_module_dir();
 
 	signal_add_first("server sendmsg", (SIGNAL_FUNC) sig_server_sendmsg);
 	signal_add_first("message private", (SIGNAL_FUNC) sig_message_private);
