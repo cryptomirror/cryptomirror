@@ -35,8 +35,6 @@ class CryptoState:
 
         self.ID_incoming = None
         self.ID_outgoing = None
-        
-        self.pending_send = 0
 
     def print_peer_identity(self):
         if self.peername and self.peer_pk2:
@@ -57,9 +55,7 @@ class CryptoState:
                 f_nonce = rawmsg[ghostlib.PN_LEN: ghostlib.PN_LEN + 8]
                 ciphertext = rawmsg[ghostlib.PN_LEN + 8:]
                 
-                #
                 # TODO Switch to PFS and verify sender using ID keys 
-                #
 
                 plaintext = ghostlib.get_ghost_message(self.peer_pk2, 
                                                        self.ident_sk1,
@@ -67,14 +63,10 @@ class CryptoState:
 
                 return 0, plaintext, ""
             except Exception, e:
-                return 1, ">Invalid message received #1<" + str(e) + "::" + message, ""
+                return 1, ">Invalid message received a1<" + str(e) + "::" + message, ""
 
         elif self.state == CryptoState.INIT:
-            #
             # Establish the anonymous channel
-            # 
-            
-            #check if the message which came is a proper crypto message
             try:
                 self.anon_pk2 = blobber.decode_blob_string(message)
             except:
@@ -86,16 +78,12 @@ class CryptoState:
             pairing = ghostlib.create_anon_channel_pair()
             self.anon_pk1, self.anon_sk1, self.ID_outgoing = pairing
             
-            #
             # send the public part of the anon channel
-            #
             self.set_state(CryptoState.ANON_FINISHED)
             return 0, "[Ghost] Initializing anonymous channel", blobber.make_blob_string(self.anon_pk1)
 
         elif self.state == CryptoState.ANON_START:
-            #
             # Finalize anon channel
-            #
             try:
                 self.anon_pk2 = blobber.decode_blob_string(message)
             except:
@@ -104,9 +92,7 @@ class CryptoState:
             if len(self.anon_pk2) != ghostlib.PK_LEN:
                 return 1, ">Invalid pubkey received<", ""
 
-            #
             # Send identity information over anon channel
-            #
             stage1_1 = ghostlib.send_identity_over_channel(self.anon_pk1,
                                                            self.anon_sk1,
                                                            self.anon_pk2,
@@ -115,13 +101,10 @@ class CryptoState:
 
             self.set_state(CryptoState.ANON_FINISHED | CryptoState.PUBKEY_SENT)
 
-            self.pending_send = 1
             return 0, "[Ghost] Exchanging identities]", blobber.make_blob_string(stage1_1)
         
         elif self.state & CryptoState.ANON_FINISHED:
-            #
             # Get identity information from peer
-            #
             rawmsg = blobber.decode_blob_string(message)
             try:
                 bob_pub, bob_nick = ghostlib.get_identity_from_channel(rawmsg, self.anon_sk1)
@@ -131,9 +114,7 @@ class CryptoState:
             self.peer_pk2 = bob_pub
             self.peername = bob_nick
 
-            #
             # Check for mismatch
-            #
             global trusted_keys
             mismatched_key = False
             known_key = False
@@ -144,7 +125,7 @@ class CryptoState:
                     mismatched_key = True
                     
             if (self.state & CryptoState.PUBKEY_SENT):
-                #no need to send pubkey again
+                #no need to send pubkey again, already sent
                 if known_key:
                     self.set_state(CryptoState.TRUSTED_AUTHENTICATED_PARTNER)
                     return 0, "Established session with known peer: %s"%(self.print_peer_identity()), ""
@@ -156,9 +137,8 @@ class CryptoState:
                     else:
                         return 0, "Established session from unknown peer: %s\n"%(self.print_peer_identity()) + \
                                   "Use /ghost add to add this user", ""
-            #
-            # Send identity if not already sent
-            #
+
+            # Send identity since it is not already sent
             stage1_1 = ghostlib.send_identity_over_channel(self.anon_pk1,
                                                            self.anon_sk1,
                                                            self.anon_pk2,
@@ -167,12 +147,8 @@ class CryptoState:
             if known_key:
                 self.set_state(CryptoState.TRUSTED_AUTHENTICATED_PARTNER)
             else:
-                # XXX
-                # XXX want to display message. requires refactoring pending_send -> 3 params?
-                # XXX
                 self.set_state(CryptoState.PUBKEY_SENT | CryptoState.PUBKEY_RECEIVED)
                             
-            self.pending_send = 1
             return 0, "[Ghost] Exhanging identity with requesting peer %s"%self.peername, blobber.make_blob_string(stage1_1)
         return 1, 'rcv unhandled %d'%self.state, ""
     
@@ -191,16 +167,11 @@ class CryptoState:
             return 0, blobber.make_blob_string(nonce + f_nonce + ciphertext)
 
         elif self.state == CryptoState.PUBKEYS_KNOWN_AND_READY:
-            #
             # Want to send a message, but this person is not trusted yet!
-            #        
             return 1, "Identities exchanged, but you haven't trusted this peer"
 
         elif self.state == CryptoState.INIT:
-            #
             # Establish the anonymous channel
-            #
-
             pairing = ghostlib.create_anon_channel_pair()
             self.anon_pk1, self.anon_sk1, self.ID_outgoing = pairing
             #send the public part of the anon channel
@@ -216,7 +187,7 @@ class CryptoState:
     
     def trust_key(self):
         #
-        # Set state. Normally conflict resolution needs to happen
+        # Set state to trusted. TODO conflict resolution needs to happen
         # here or earlier.
         #
         if self.state == CryptoState.TRUSTED_AUTHENTICATED_PARTNER:
@@ -231,8 +202,6 @@ class CryptoState:
             global trusted_keys
             trusted_keys[self.peername] = self.peer_pk2
             self.set_state(CryptoState.TRUSTED_AUTHENTICATED_PARTNER)
-
-
 
 global users
 global trusted_keys
